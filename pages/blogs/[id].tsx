@@ -3,6 +3,7 @@ import Head from "next/head";
 import marked from "marked";
 import Highlight from "react-highlight";
 import { Header } from "@/components/common/Header";
+import { buildTitle } from "@/utils/title";
 
 type Props = {
   about: About;
@@ -24,8 +25,7 @@ export default function Home(props: Props): JSX.Element {
   return (
     <div className="bg-gray-900 text-white">
       <Head>
-        <title>λ沢.me | {props.blogContent.title}</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>{buildTitle(props.blogContent.title)}</title>
         <link
           href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/monokai.min.css"
           rel="stylesheet"
