@@ -39,7 +39,7 @@ function buildTimeline(props: Props): Timeline[] {
     ...props.products.contents.map<Timeline>((p) => {
       return {
         startDate: new Date(p.releaseDate),
-        title: `${p.title}をリリースしました。`,
+        title: `プロジェクトを公開しました: ${p.title}`,
         link: p.link,
         detail: p.detail,
       };
@@ -82,28 +82,25 @@ export async function getServerSideProps() {
 export default function Home(props: Props): JSX.Element {
   return (
     <div className="bg-gray-900 text-white">
-      <main className="min-h-screen min-h-screen container mx-auto px-4">
+      <main className="min-h-screen min-h-screen container mx-auto px-4 pb-8">
         <div>
           <Header about={props.about} />
-          <ul>
+          <div>
             {buildTimeline(props).map((timeline) => (
-              <li className="p-4 pb-8" key={timeline.title}>
-                <div className="pl-1 text-xs text-gray-400">
+              <div className="px-1" key={timeline.title}>
+                <span className="pr-2 text-xs text-gray-400">
                   {buildTimelineDate(timeline)}
-                </div>
-                <div className="pl-1">
-                  <span>
-                    {timeline.link ? (
-                      <Link href={timeline.link} text={timeline.title} />
-                    ) : (
-                      <span>{timeline.title}</span>
-                    )}
-                  </span>
-                </div>
-                <div className="p-1 whitespace-pre-wrap">{timeline.detail}</div>
-              </li>
+                </span>
+                <span>
+                  {timeline.link ? (
+                    <Link href={timeline.link} text={timeline.title} />
+                  ) : (
+                    <span>{timeline.title}</span>
+                  )}
+                </span>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </main>
     </div>
