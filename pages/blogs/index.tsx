@@ -2,6 +2,7 @@ import { Header } from "@/components/common/Header";
 import { Link } from "@/components/common/Link";
 import { About, apiURLs, BlogContents } from "@/utils/api";
 import { formatDate } from "@/utils/formatter";
+import { buildTitle } from "@/utils/title";
 import Head from "next/head";
 
 type Props = {
@@ -24,8 +25,7 @@ export default function Home(props: Props): JSX.Element {
   return (
     <div className="bg-gray-900 text-white">
       <Head>
-        <title>λ沢.me | ブログ</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>{buildTitle("ブログ")}</title>
       </Head>
 
       <main className="min-h-screen min-h-screen container mx-auto px-4">

@@ -3,6 +3,7 @@ import { About, apiURLs, BlogContents, Products } from "@/utils/api";
 import { Link } from "@/components/common/Link";
 import { Header } from "@/components/common/Header";
 import { formatDate } from "@/utils/formatter";
+import { buildTitle } from "@/utils/title";
 
 type Props = {
   about: About;
@@ -81,11 +82,6 @@ export async function getServerSideProps() {
 export default function Home(props: Props): JSX.Element {
   return (
     <div className="bg-gray-900 text-white">
-      <Head>
-        <title>λ沢.me</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <main className="min-h-screen min-h-screen container mx-auto px-4">
         <div>
           <Header about={props.about} />
