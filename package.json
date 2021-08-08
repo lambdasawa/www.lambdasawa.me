@@ -8,12 +8,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "html-react-parser": "^1.2.7",
+    "microcms-js-sdk": "^1.2.0",
     "next": "10.x",
     "react": "17.x",
-    "react-dom": "17.x"
+    "react-dom": "17.x",
+    "swr": "^0.5.6"
   },
   "devDependencies": {
     "@types/react": "^17.0.16",
+    "@types/react-dom": "17.0.9",
     "typescript": "^4.3.5"
   }
 }
