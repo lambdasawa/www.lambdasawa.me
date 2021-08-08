@@ -1,6 +1,6 @@
 import { createClient } from "microcms-js-sdk";
 
-const origin = process.env.ORIGIN || "http://localhost:3000";
+export const origin = process.env.ORIGIN || "http://localhost:3000";
 
 export const apiURLs = {
   about: `${origin}/api/about`,

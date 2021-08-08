@@ -10,7 +10,7 @@
   "dependencies": {
     "html-react-parser": "^1.2.7",
     "microcms-js-sdk": "^1.2.0",
-    "next": "10.x",
+    "next": "11.x",
     "react": "17.x",
     "react-dom": "17.x",
     "swr": "^0.5.6"
@@ -18,6 +18,9 @@
   "devDependencies": {
     "@types/react": "^17.0.16",
     "@types/react-dom": "17.0.9",
+    "autoprefixer": "^10.3.1",
+    "postcss": "^8.3.6",
+    "tailwindcss": "^2.2.7",
     "typescript": "^4.3.5"
   }
 }
