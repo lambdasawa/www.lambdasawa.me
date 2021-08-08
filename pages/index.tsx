@@ -1,9 +1,7 @@
-import Head from "next/head";
+import { Main } from "@/components/common/Main";
+import { Timeline } from "@/components/common/Timeline";
 import { About, apiURLs, BlogContents, Products } from "@/utils/api";
-import { Link } from "@/components/common/Link";
-import { Header } from "@/components/common/Header";
 import { formatDate } from "@/utils/formatter";
-import { buildTitle } from "@/utils/title";
 
 type Props = {
   about: About;
@@ -81,28 +79,16 @@ export async function getServerSideProps() {
 
 export default function Home(props: Props): JSX.Element {
   return (
-    <div className="bg-gray-900 text-white">
-      <main className="min-h-screen min-h-screen container mx-auto px-4 pb-8">
-        <div>
-          <Header about={props.about} />
-          <div>
-            {buildTimeline(props).map((timeline) => (
-              <div className="px-1" key={timeline.title}>
-                <span className="pr-2 text-xs text-gray-400">
-                  {buildTimelineDate(timeline)}
-                </span>
-                <span>
-                  {timeline.link ? (
-                    <Link href={timeline.link} text={timeline.title} />
-                  ) : (
-                    <span>{timeline.title}</span>
-                  )}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </main>
-    </div>
+    <Main about={props.about}>
+      <Timeline
+        items={buildTimeline(props).map((t) => {
+          return {
+            date: buildTimelineDate(t),
+            text: t.title,
+            link: t.link,
+          };
+        })}
+      />
+    </Main>
   );
 }
