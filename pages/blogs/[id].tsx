@@ -34,7 +34,11 @@ export default function Home(props: Props): JSX.Element {
       <div className="blog">
         <h1>{props.blogContent.title}</h1>
         <Highlight innerHTML={true}>
-          {marked(props?.blogContent?.content || "")}
+          {marked(props?.blogContent?.content || "", {
+            gfm: true,
+            breaks: true,
+            headerIds: true,
+          })}
         </Highlight>
       </div>
     </Main>
