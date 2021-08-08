@@ -7,11 +7,11 @@ type Props = {
 
 export function Link(props: Props): JSX.Element {
   return props.href.startsWith("/") ? (
-    <span className="underline">
+    <span className="text-blue-300">
       <NextLink href={props.href}>{props.text}</NextLink>
     </span>
   ) : (
-    <a className="underline" href={props.href}>
+    <a className="text-blue-300" href={props.href}>
       {props.text}
     </a>
   );

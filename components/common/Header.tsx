@@ -8,16 +8,16 @@ type Props = {
 export function Header(props: Props): JSX.Element {
   return (
     <div>
-      <div className="p-4">
+      <div className="py-4">
         <Link href={"/"} text={"λ沢.me"} />
       </div>
-      <div className="flex flex-wrap p-4">
-        {props.about.links.map((link, i) => (
-          <div className={i === 0 ? "py-1 pr-1" : "p-1"} key={link.link}>
+      <div className="flex flex-wrap py-4">
+        {props.about.links.map((link) => (
+          <div className="py-1 pr-6" key={link.link}>
             <Link href={link.link} text={link.name} />
           </div>
         ))}
-        <div className="p-1">
+        <div className="p-1 pr-4">
           <Link href={`mailto:${props.about.mailAddress}`} text={"Email"} />
         </div>
       </div>

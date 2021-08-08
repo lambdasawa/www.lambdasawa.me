@@ -30,12 +30,12 @@ export default function Home(props: Props): JSX.Element {
 
       <main className="min-h-screen min-h-screen container mx-auto px-4">
         <Header about={props.about} />
-        <div className="px-4">
+        <div>
           {props.blogContents.contents.map((content) => (
-            <div className="pb-4">
-              <div className="pl-1 text-xs text-gray-400">
+            <div>
+              <span className="px-1 text-xs text-gray-400">
                 {formatDate(new Date(content.releaseDate))}
-              </div>
+              </span>
               <Link href={`/blogs/${content.id}`} text={content.title} />
             </div>
           ))}
