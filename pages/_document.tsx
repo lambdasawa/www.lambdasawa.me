@@ -7,7 +7,7 @@ import Document, {
 } from "next/document";
 
 class MyDocument extends Document {
-  private static readonly gaTrackingId: string =
+  public static readonly gaTrackingId: string =
     process.env.NEXT_PUBLIC_GA_TRACKING_ID || "";
 
   static async getInitialProps(ctx: DocumentContext) {
