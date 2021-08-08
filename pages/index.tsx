@@ -1,10 +1,13 @@
 import Head from "next/head";
-import { About, apiURLs, Products } from "@/utils/api";
+import { About, apiURLs, BlogContents, Products } from "@/utils/api";
 import { Link } from "@/components/common/Link";
+import { Header } from "@/components/common/Header";
+import { formatDate } from "@/utils/formatter";
 
 type Props = {
   about: About;
   products: Products;
+  blogContents: BlogContents;
 };
 
 type Timeline = {
@@ -40,14 +43,15 @@ function buildTimeline(props: Props): Timeline[] {
         detail: p.detail,
       };
     }),
+    ...props.blogContents.contents.map<Timeline>((c) => {
+      return {
+        startDate: new Date(c.releaseDate),
+        title: `ブログを書きました: ${c.title}`,
+        link: `/blogs/${c.id}`,
+        detail: "",
+      };
+    }),
   ].sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
-}
-
-function formatDate(d: Date): string {
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${year}/${month}/${day}`;
 }
 
 function buildTimelineDate(timeline: Timeline): string {
@@ -67,6 +71,9 @@ export async function getServerSideProps() {
       products: await fetch(apiURLs.products).then<Products>((res) =>
         res.json()
       ),
+      blogContents: await fetch(apiURLs.blogContents).then<BlogContents>(
+        (res) => res.json()
+      ),
     },
   };
 }
@@ -79,21 +86,9 @@ export default function Home(props: Props): JSX.Element {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="container mx-auto px-4">
-        <div className="p-4">
-          <div>ID: {props.about.handleName}</div>
-        </div>
-        <div className="flex flex-wrap p-4">
-          {props.about.links.map((link, i) => (
-            <div className={i === 0 ? "py-1 pr-1" : "p-1"} key={link.link}>
-              <Link href={link.link} text={link.name} />
-            </div>
-          ))}
-          <div className="p-1">
-            <Link href={`mailto:${props.about.mailAddress}`} text={"Email"} />
-          </div>
-        </div>
+      <main className="min-h-screen min-h-screen container mx-auto px-4">
         <div>
+          <Header about={props.about} />
           <ul>
             {buildTimeline(props).map((timeline) => (
               <li className="p-4 pb-8" key={timeline.title}>

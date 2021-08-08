@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.blog h1:before {
+  content: "# ";
+  line-height: 4;
+}
+
+.blog h2:before {
+  content: "## ";
+  line-height: 4;
+}
+
+.blog h3:before {
+  content: "### ";
+  line-height: 4;
+}
+
+.blog h4:before {
+  content: "#### ";
+  line-height: 4;
+}
+
+.blog a {
+  text-decoration: underline;
+}
+
+.blog p {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.blog li {
+  padding-left: 1em;
+}
+
+.blog li:before {
+  content: "* ";
+}
