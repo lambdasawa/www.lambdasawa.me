@@ -1,9 +1,9 @@
+import { Main } from "@/components/common/Main";
 import { About, apiURLs, BlogContent } from "@/utils/api";
-import Head from "next/head";
-import marked from "marked";
-import Highlight from "react-highlight";
-import { Header } from "@/components/common/Header";
 import { buildTitle } from "@/utils/title";
+import marked from "marked";
+import Head from "next/head";
+import Highlight from "react-highlight";
 
 type Props = {
   about: About;
@@ -23,25 +23,20 @@ export async function getServerSideProps(context) {
 
 export default function Home(props: Props): JSX.Element {
   return (
-    <div className="bg-gray-900 text-white">
+    <Main title={buildTitle(props.blogContent.title)} about={props.about}>
       <Head>
-        <title>{buildTitle(props.blogContent.title)}</title>
         <link
           href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/monokai.min.css"
           rel="stylesheet"
         />
       </Head>
 
-      <main className="min-h-screen min-h-screen container mx-auto px-4">
-        <Header about={props.about} />
-
-        <div className="blog">
-          <h1>{props.blogContent.title}</h1>
-          <Highlight innerHTML={true}>
-            {marked(props?.blogContent?.content || "")}
-          </Highlight>
-        </div>
-      </main>
-    </div>
+      <div className="blog">
+        <h1>{props.blogContent.title}</h1>
+        <Highlight innerHTML={true}>
+          {marked(props?.blogContent?.content || "")}
+        </Highlight>
+      </div>
+    </Main>
   );
 }
