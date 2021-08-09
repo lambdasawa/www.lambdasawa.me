@@ -5,6 +5,21 @@ import marked from "marked";
 import Head from "next/head";
 import Highlight from "react-highlight";
 
+marked.use({
+  renderer: {
+    heading(text, level) {
+      const prefix = "#".repeat(level) + " ";
+      const id = encodeURIComponent(text);
+      return `
+        <h${level} id="${id}">
+          <a href="#${id}">${prefix}</a>
+          <span>${text}</span>
+        </h${level}>
+      `;
+    },
+  },
+});
+
 type Props = {
   about: About;
   blogContent: BlogContent;

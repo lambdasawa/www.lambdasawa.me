@@ -24,22 +24,6 @@
   margin-bottom: 2rem;
 }
 
-.blog h1:before {
-  content: "# ";
-}
-
-.blog h2:before {
-  content: "## ";
-}
-
-.blog h3:before {
-  content: "### ";
-}
-
-.blog h4:before {
-  content: "#### ";
-}
-
 .blog a {
   color: rgba(147, 197, 253, var(--tw-text-opacity));
 }
