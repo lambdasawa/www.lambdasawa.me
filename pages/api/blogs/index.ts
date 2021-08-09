@@ -1,6 +1,6 @@
-import { BlogContent, BlogContents, client } from "@/utils/api";
+import { BlogContents, client } from "@/utils/api";
 
-export default async (req, res) => {
+async function handle(req, res) {
   const resp = await client.get<BlogContents>({
     endpoint: "blog-contents",
     queries: { orders: "-releaseDate", limit: 50 },
@@ -10,4 +10,6 @@ export default async (req, res) => {
   res.json({
     ...resp,
   });
-};
+}
+
+export default handle;

@@ -1,6 +1,6 @@
 import { About, client } from "@/utils/api";
 
-export default async (req, res) => {
+async function handle(req, res) {
   const resp = await client.get<About>({
     endpoint: "about",
     queries: {},
@@ -16,4 +16,6 @@ export default async (req, res) => {
           new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
       ),
   });
-};
+}
+
+export default handle;

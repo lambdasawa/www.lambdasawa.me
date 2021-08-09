@@ -2,6 +2,8 @@ import { Main } from "@/components/common/Main";
 import { Timeline } from "@/components/common/Timeline";
 import { About, apiURLs, BlogContents, Products } from "@/utils/api";
 import { formatDate } from "@/utils/formatter";
+import { buildTitle } from "@/utils/title";
+import Head from "next/head";
 
 type Props = {
   about: About;
@@ -80,6 +82,10 @@ export async function getServerSideProps() {
 export default function Home(props: Props): JSX.Element {
   return (
     <Main about={props.about}>
+      <Head>
+        <title>{buildTitle()}</title>
+      </Head>
+
       <Timeline
         items={buildTimeline(props).map((t) => {
           return {

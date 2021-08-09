@@ -1,6 +1,6 @@
 import { BlogContent, client } from "@/utils/api";
 
-export default async (req, res) => {
+async function handle(req, res) {
   const resp = await client.get<BlogContent>({
     endpoint: "blog-contents",
     contentId: req.query.id,
@@ -11,4 +11,6 @@ export default async (req, res) => {
   res.json({
     ...resp,
   });
-};
+}
+
+export default handle;
