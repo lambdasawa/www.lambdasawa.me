@@ -7,9 +7,9 @@ import Highlight from "react-highlight";
 
 marked.use({
   renderer: {
-    heading(text, level) {
+    heading(text, level, raw) {
       const prefix = "#".repeat(level) + " ";
-      const id = encodeURIComponent(text);
+      const id = encodeURIComponent(raw);
       return `
         <h${level} id="${id}">
           <a href="#${id}">${prefix}</a>
