@@ -1,6 +1,6 @@
 import { client, Products } from "@/utils/api";
 
-export default async (req, res) => {
+async function handle(req, res) {
   const resp = await client.get<Products>({
     endpoint: "products",
     queries: {},
@@ -10,4 +10,6 @@ export default async (req, res) => {
   res.json({
     ...resp,
   });
-};
+}
+
+export default handle;

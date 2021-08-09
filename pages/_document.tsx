@@ -20,7 +20,6 @@ class MyDocument extends Document {
     return (
       <Html className="dark">
         <Head>
-          <title>{buildTitle()}</title>
           <link rel="icon" href="/favicon.ico" />
           {MyDocument.gaTrackingId && (
             <>
