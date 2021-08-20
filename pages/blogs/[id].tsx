@@ -43,10 +43,15 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: { params: { id: string } }) {
+  const [about, blogContent] = await Promise.all([
+    findAbout(),
+    findBlogContent(context.params.id),
+  ]);
+
   return {
     props: {
-      about: await findAbout(),
-      blogContent: await findBlogContent(context.params.id),
+      about,
+      blogContent,
     },
     revalidate: 60,
   };

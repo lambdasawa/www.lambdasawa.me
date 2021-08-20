@@ -73,11 +73,17 @@ function buildTimelineDate(timeline: Timeline): string {
 }
 
 export async function getStaticProps() {
+  const [about, products, blogContents] = await Promise.all([
+    findAbout(),
+    findProducts(),
+    findBlogContents(),
+  ]);
+
   return {
     props: {
-      about: await findAbout(),
-      products: await findProducts(),
-      blogContents: await findBlogContents(),
+      about,
+      products,
+      blogContents,
     },
     revalidate: 60,
   };

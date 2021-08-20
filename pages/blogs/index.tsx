@@ -10,10 +10,15 @@ type Props = {
 };
 
 export async function getStaticProps() {
+  const [about, blogContents] = await Promise.all([
+    await findAbout(),
+    await findBlogContents(),
+  ]);
+
   return {
     props: {
-      about: await findAbout(),
-      blogContents: await findBlogContents(),
+      about,
+      blogContents,
     },
     revalidate: 60,
   };
