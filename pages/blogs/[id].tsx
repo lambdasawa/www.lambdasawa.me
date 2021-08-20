@@ -1,7 +1,14 @@
 import { Main } from "@/components/common/Main";
-import { About, apiURLs, BlogContent } from "@/utils/api";
+import {
+  About,
+  BlogContent,
+  findAbout,
+  findBlogContent,
+  findBlogContents,
+} from "@/utils/api";
 import { buildTitle } from "@/utils/title";
 import marked from "marked";
+import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import Highlight from "react-highlight";
 
@@ -25,18 +32,33 @@ type Props = {
   blogContent: BlogContent;
 };
 
-export async function getServerSideProps(context) {
+export async function getStaticPaths() {
+  const blogContents = await findBlogContents();
+
+  const paths = blogContents.contents.map((content) => ({
+    params: { id: content.id },
+  }));
+
+  return { paths, fallback: true };
+}
+
+export async function getStaticProps(context: { params: { id: string } }) {
   return {
     props: {
-      about: await fetch(apiURLs.about).then<About>((res) => res.json()),
-      blogContent: await fetch(
-        apiURLs.blogContentDetail(context.params.id)
-      ).then<BlogContent>((res) => res.json()),
+      about: await findAbout(),
+      blogContent: await findBlogContent(context.params.id),
     },
+    revalidate: 60,
   };
 }
 
 export default function Home(props: Props): JSX.Element {
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Main title={buildTitle(props.blogContent.title)} about={props.about}>
       <Head>
