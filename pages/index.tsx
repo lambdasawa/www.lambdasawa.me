@@ -1,6 +1,13 @@
 import { Main } from "@/components/common/Main";
 import { Timeline } from "@/components/common/Timeline";
-import { About, apiURLs, BlogContents, Products } from "@/utils/api";
+import {
+  About,
+  BlogContents,
+  findAbout,
+  findBlogContents,
+  findProducts,
+  Products,
+} from "@/utils/api";
 import { formatDate } from "@/utils/formatter";
 import { buildTitle } from "@/utils/title";
 import Head from "next/head";
@@ -65,17 +72,14 @@ function buildTimelineDate(timeline: Timeline): string {
   return `${formatDate(startDate)} ~ ${formatDate(endDate)}`;
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   return {
     props: {
-      about: await fetch(apiURLs.about).then<About>((res) => res.json()),
-      products: await fetch(apiURLs.products).then<Products>((res) =>
-        res.json()
-      ),
-      blogContents: await fetch(apiURLs.blogContents).then<BlogContents>(
-        (res) => res.json()
-      ),
+      about: await findAbout(),
+      products: await findProducts(),
+      blogContents: await findBlogContents(),
     },
+    revalidate: 60,
   };
 }
 

@@ -1,6 +1,6 @@
 import { Main } from "@/components/common/Main";
 import { Timeline } from "@/components/common/Timeline";
-import { About, apiURLs, BlogContents } from "@/utils/api";
+import { About, BlogContents, findAbout, findBlogContents } from "@/utils/api";
 import { formatDate } from "@/utils/formatter";
 import { buildTitle } from "@/utils/title";
 
@@ -9,14 +9,13 @@ type Props = {
   blogContents: BlogContents;
 };
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   return {
     props: {
-      about: await fetch(apiURLs.about).then<About>((res) => res.json()),
-      blogContents: await fetch(apiURLs.blogContents).then<BlogContents>(
-        (res) => res.json()
-      ),
+      about: await findAbout(),
+      blogContents: await findBlogContents(),
     },
+    revalidate: 60,
   };
 }
 
