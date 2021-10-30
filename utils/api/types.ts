@@ -56,5 +56,6 @@ export interface BlogContent {
   publishedAt: string;
   revisedAt: string;
   title: string;
-  content: string;
+  htmlContent: string;
+  mdContent: string;
 }

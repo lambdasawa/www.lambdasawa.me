@@ -1,16 +1,11 @@
 import { Main } from "@/components/common/Main";
-import {
-  About,
-  BlogContent,
-  findAbout,
-  findBlogContent,
-  findBlogContents,
-} from "@/utils/api";
+import { About, BlogContent, findAbout, findBlogContent, findBlogContents } from "@/utils/api";
 import { buildTitle } from "@/utils/title";
 import marked from "marked";
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import Highlight from "react-highlight";
+import parse from "html-react-parser";
 
 marked.use({
   renderer: {
@@ -43,10 +38,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: { params: { id: string } }) {
-  const [about, blogContent] = await Promise.all([
-    findAbout(),
-    findBlogContent(context.params.id),
-  ]);
+  const [about, blogContent] = await Promise.all([findAbout(), findBlogContent(context.params.id)]);
 
   return {
     props: {
@@ -75,13 +67,17 @@ export default function Home(props: Props): JSX.Element {
 
       <div className="blog">
         <h1>{props.blogContent.title}</h1>
-        <Highlight innerHTML={true}>
-          {marked(props?.blogContent?.content || "", {
-            gfm: true,
-            breaks: true,
-            headerIds: true,
-          })}
-        </Highlight>
+        {props?.blogContent?.htmlContent ? (
+          parse(props?.blogContent?.htmlContent)
+        ) : (
+          <Highlight innerHTML={true}>
+            {marked(props?.blogContent?.mdContent || "", {
+              gfm: true,
+              breaks: true,
+              headerIds: true,
+            })}
+          </Highlight>
+        )}
       </div>
     </Main>
   );
