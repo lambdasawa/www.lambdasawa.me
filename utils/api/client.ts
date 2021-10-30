@@ -22,7 +22,7 @@ export function findBlogContent(id: string, draftKey?: string): Promise<BlogCont
 export function findNotes(): Promise<Notes> {
   return client.get<BlogContents>({
     endpoint: "notes",
-    queries: { orders: "-publishedAt", limit: 50 },
+    queries: { orders: "-revisedAt", limit: 50 },
   });
 }
 
