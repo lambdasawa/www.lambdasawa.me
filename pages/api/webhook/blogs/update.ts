@@ -19,8 +19,14 @@ type MicroCMSWebhookEvent<A> = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { webhookToken } = req.query;
 
-  if (!webhookToken) return res.status(404).send("");
-  if (webhookToken !== process.env.WEBHOOK_TOKEN) return res.status(404).send("");
+  if (!webhookToken) {
+    console.log("token is empty");
+    return res.status(404).send("");
+  }
+  if (webhookToken !== process.env.WEBHOOK_TOKEN) {
+    console.log("token is not correct");
+    return res.status(404).send("");
+  }
 
   const twitterClient = new TwitterClient({
     apiKey: process.env.TWITTER_API_KEY,
@@ -34,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const body = req.body as MicroCMSWebhookEvent<BlogContent>;
   const onNewContent = !body.contents.old.publishValue && body.contents.new.publishValue;
 
-  console.log({ onNewContent });
+  console.log(JSON.stringify({ onNewContent }));
 
   if (onNewContent) {
     await twitterClient.tweets.statusesUpdate({
