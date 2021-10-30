@@ -37,8 +37,11 @@ export async function getStaticPaths() {
   return { paths, fallback: true };
 }
 
-export async function getStaticProps(context: { params: { id: string } }) {
-  const [about, blogContent] = await Promise.all([findAbout(), findBlogContent(context.params.id)]);
+export async function getStaticProps(context: { params: { id: string }; previewData: { draftKey?: string } }) {
+  const [about, blogContent] = await Promise.all([
+    findAbout(),
+    findBlogContent(context.params.id, context?.previewData?.draftKey),
+  ]);
 
   return {
     props: {
