@@ -30,7 +30,7 @@ export default function Home(props: Props): JSX.Element {
       <Timeline
         items={props.blogContents.contents.map((c) => {
           return {
-            date: formatDate(new Date(c.releaseDate)),
+            date: formatDate(new Date(c.publishedAt)),
             text: c.title,
             link: `/blogs/${c.id}`,
           };

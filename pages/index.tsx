@@ -45,7 +45,7 @@ function buildTimeline(props: Props): Timeline[] {
     }),
     ...props.products.contents.map<Timeline>((p) => {
       return {
-        startDate: new Date(p.releaseDate),
+        startDate: new Date(p.publishedAt),
         title: `プロジェクトを公開しました: ${p.title}`,
         link: p.link,
         detail: p.detail,
@@ -53,7 +53,7 @@ function buildTimeline(props: Props): Timeline[] {
     }),
     ...props.blogContents.contents.map<Timeline>((c) => {
       return {
-        startDate: new Date(c.releaseDate),
+        startDate: new Date(c.publishedAt),
         title: `ブログを書きました: ${c.title}`,
         link: `/blogs/${c.id}`,
         detail: "",
