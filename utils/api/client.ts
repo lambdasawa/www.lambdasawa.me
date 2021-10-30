@@ -19,7 +19,7 @@ export function findBlogContent(id: string): Promise<BlogContent> {
 export function findBlogContents(): Promise<BlogContents> {
   return client.get<BlogContents>({
     endpoint: "blog-contents",
-    queries: { orders: "-releaseDate", limit: 50 },
+    queries: { orders: "-publishedAt", limit: 50 },
   });
 }
 
