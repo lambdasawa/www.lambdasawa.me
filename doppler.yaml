@@ -1,0 +1,4 @@
+setup:
+  project: lambdasawa-me
+  environment: main
+  config: main
