@@ -8,11 +8,13 @@ export const client = createClient({
   apiKey: process.env.MICROCMS_API_KEY,
 });
 
-export function findBlogContent(id: string): Promise<BlogContent> {
+export function findBlogContent(id: string, draftKey?: string): Promise<BlogContent> {
   return client.get<BlogContent>({
     endpoint: "blog-contents",
     contentId: id,
-    queries: {},
+    queries: {
+      draftKey,
+    },
   });
 }
 
@@ -33,10 +35,7 @@ export async function findAbout(): Promise<About> {
     ...resp,
     histories: resp.histories
       .filter((h) => h.public)
-      .sort(
-        (a, b) =>
-          new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
-      ),
+      .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()),
   };
 }
 
