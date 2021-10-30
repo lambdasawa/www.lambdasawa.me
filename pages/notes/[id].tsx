@@ -38,6 +38,8 @@ export default function Home(props: Props): JSX.Element {
     return <div>Loading...</div>;
   }
 
+  console.log(`https://lambdasawa-blog.microcms.io/apis${router.asPath}`);
+
   return (
     <Main title={buildTitle(props.note.title)} about={props.about}>
       <div className="blog">{parse(props?.note?.htmlContent)}</div>
