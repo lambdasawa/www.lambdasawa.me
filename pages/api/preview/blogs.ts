@@ -7,10 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!draftKey) return res.status(404).send("");
 
   res.setPreviewData({ draftKey });
-
-  res.writeHead(301, { Location: `/blogs/${id}` });
-
-  return res.send("");
+  res.redirect(`/blogs/${id}`);
 };
 
 export default handler;
