@@ -2,6 +2,7 @@ import { Link } from "@/components/common/Link";
 import { Main } from "@/components/common/Main";
 import { About, findAbout, findNotes, Notes } from "@/utils/api";
 import { buildTitle } from "@/utils/title";
+import { useRouter } from "next/dist/client/router";
 
 type Props = {
   about: About;
@@ -21,6 +22,10 @@ export async function getStaticProps() {
 }
 
 export default function Home(props: Props): JSX.Element {
+  const router = useRouter();
+
+  console.log(`https://lambdasawa-blog.microcms.io/apis${router.asPath}`);
+
   return (
     <Main title={buildTitle("ノート")} about={props.about}>
       <div className="flex flex-wrap">
