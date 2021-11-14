@@ -1,6 +1,7 @@
 import { BlogContent } from "@/utils/api";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { TwitterClient } from "twitter-api-client";
+import * as crypto from "crypto";
 
 type MicroCMSWebhookContent<A> = {
   status: ("DRAFT" | "PUBLISH")[];
@@ -16,16 +17,28 @@ type MicroCMSWebhookEvent<A> = {
   };
 };
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { webhookToken } = req.query;
-
-  if (!webhookToken) {
-    console.log("token is empty");
-    return res.status(404).send("");
+function verifySignature(req: NextApiRequest) {
+  const expected = crypto
+    .createHmac("sha256", process.env.WEBHOOK_SECRET || "")
+    .update(req.body)
+    .digest("hex");
+  const actual = req.headers["x-microcms-signature"].toString();
+  if (expected.length !== actual.length) {
+    console.log("token length is invalid");
+    return false;
   }
-  if (webhookToken !== process.env.WEBHOOK_TOKEN) {
+
+  if (!crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(actual))) {
     console.log("token is not correct");
-    return res.status(404).send("");
+    return false;
+  }
+
+  return true;
+}
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  if (!verifySignature(req)) {
+    return res.status(404).json({});
   }
 
   const twitterClient = new TwitterClient({
