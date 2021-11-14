@@ -51,7 +51,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log(JSON.stringify({ body: req.body }, null, 2));
 
   const body = req.body as MicroCMSWebhookEvent<BlogContent>;
-  const onNewContent = !body.contents.old.publishValue && body.contents.new.publishValue;
+  const onNewContent = !body?.contents?.old?.publishValue && body?.contents?.new?.publishValue;
 
   console.log(JSON.stringify({ onNewContent }));
 
