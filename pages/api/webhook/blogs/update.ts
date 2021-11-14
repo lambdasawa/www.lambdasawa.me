@@ -20,7 +20,7 @@ type MicroCMSWebhookEvent<A> = {
 function verifySignature(req: NextApiRequest) {
   const expected = crypto
     .createHmac("sha256", process.env.WEBHOOK_SECRET || "")
-    .update(req.body)
+    .update(JSON.stringify(req.body))
     .digest("hex");
   const actual = req.headers["x-microcms-signature"].toString();
   if (expected.length !== actual.length) {
