@@ -1,5 +1,5 @@
 import { createClient } from "microcms-js-sdk";
-import { Note, Notes } from ".";
+import { Cheatsheet, Cheatsheets } from ".";
 import { About, BlogContent, BlogContents, Products } from "./types";
 
 export const origin = process.env.ORIGIN || "http://localhost:3000";
@@ -19,16 +19,16 @@ export function findBlogContent(id: string, draftKey?: string): Promise<BlogCont
   });
 }
 
-export function findNotes(): Promise<Notes> {
+export function findCheatseets(): Promise<Cheatsheets> {
   return client.get<BlogContents>({
-    endpoint: "notes",
+    endpoint: "cheatsheets",
     queries: { orders: "-revisedAt", limit: 50 },
   });
 }
 
-export function findNote(id: string, draftKey?: string): Promise<Note> {
+export function findCheatsheet(id: string, draftKey?: string): Promise<Cheatsheet> {
   return client.get<BlogContent>({
-    endpoint: "notes",
+    endpoint: "cheatsheets",
     contentId: id,
     queries: {
       draftKey,

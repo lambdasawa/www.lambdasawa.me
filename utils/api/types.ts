@@ -56,18 +56,17 @@ export interface BlogContent {
   publishedAt: string;
   revisedAt: string;
   title: string;
-  htmlContent: string;
   mdContent: string;
 }
 
-export type Notes = Contents<BlogContent>;
+export type Cheatsheets = Contents<Cheatsheet>;
 
-export interface Note {
+export interface Cheatsheet {
   id: string;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
   revisedAt: string;
   title: string;
-  htmlContent: string;
+  mdContent: string;
 }
