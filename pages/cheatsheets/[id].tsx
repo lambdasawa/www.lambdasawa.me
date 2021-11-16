@@ -1,39 +1,38 @@
 import { Main } from "@/components/common/Main";
-import { About, BlogContent, findAbout, findBlogContent, findBlogContents } from "@/utils/api";
+import { About, findAbout, findCheatsheet, findCheatseets, Cheatsheet } from "@/utils/api";
 import { buildTitle } from "@/utils/title";
+import { init } from "@/utils/markdown";
 import marked from "marked";
 import { useRouter } from "next/dist/client/router";
-import Head from "next/head";
 import Highlight from "react-highlight";
-import { init } from "@/utils/markdown";
 
 init();
 
 type Props = {
   about: About;
-  blogContent: BlogContent;
+  cheatsheet: Cheatsheet;
 };
 
 export async function getStaticPaths() {
-  const blogContents = await findBlogContents();
+  const cheatsheets = await findCheatseets();
 
-  const paths = blogContents.contents.map((content) => ({
-    params: { id: content.id },
+  const paths = cheatsheets.contents.map((cheatsheet) => ({
+    params: { id: cheatsheet.id },
   }));
 
   return { paths, fallback: true };
 }
 
 export async function getStaticProps(context: { params: { id: string }; previewData: { draftKey?: string } }) {
-  const [about, blogContent] = await Promise.all([
+  const [about, cheatsheet] = await Promise.all([
     findAbout(),
-    findBlogContent(context.params.id, context?.previewData?.draftKey),
+    findCheatsheet(context.params.id, context?.previewData?.draftKey),
   ]);
 
   return {
     props: {
       about,
-      blogContent,
+      cheatsheet,
     },
     revalidate: 60,
   };
@@ -46,22 +45,15 @@ export default function Home(props: Props): JSX.Element {
     return <div>Loading...</div>;
   }
 
-  console.log(`https://lambdasawa-blog.microcms.io/apis${router.asPath.replace("blogs", "blog-contents")}`);
+  console.log(`https://lambdasawa-blog.microcms.io/apis${router.asPath}`);
 
   return (
-    <Main title={buildTitle(props.blogContent.title)} about={props.about}>
-      <Head>
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/monokai.min.css"
-          rel="stylesheet"
-        />
-      </Head>
-
+    <Main title={buildTitle(props.cheatsheet.title)} about={props.about}>
       <div className="blog">
-        <h1>{props.blogContent.title}</h1>
+        <h1>{props.cheatsheet.title}</h1>
         {
           <Highlight innerHTML={true}>
-            {marked(props?.blogContent?.mdContent || "", {
+            {marked(props?.cheatsheet?.mdContent || "", {
               gfm: true,
               breaks: true,
               headerIds: true,
