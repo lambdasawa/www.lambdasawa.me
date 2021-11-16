@@ -2,7 +2,12 @@ import { Link } from "@/components/common/Link";
 import { Main } from "@/components/common/Main";
 import { About, findAbout, findCheatseets, Cheatsheets } from "@/utils/api";
 import { buildTitle } from "@/utils/title";
+import { init } from "@/utils/markdown";
 import { useRouter } from "next/dist/client/router";
+import Highlight from "react-highlight";
+import marked from "marked";
+
+init();
 
 type Props = {
   about: About;
@@ -28,13 +33,18 @@ export default function Home(props: Props): JSX.Element {
 
   return (
     <Main title={buildTitle("チートシート")} about={props.about}>
-      <div>
+      <div className="blog">
         {props.cheatsheets.contents.map((n) => {
-          const text = n.title;
-          const link = `/cheatsheets/${n.id}`;
           return (
-            <div key={link}>
-              <Link href={link} text={text}></Link>
+            <div key={n.id}>
+              <h2>{`## ${n.title}`}</h2>
+              <Highlight innerHTML={true}>
+                {marked(n.mdContent || "", {
+                  gfm: true,
+                  breaks: true,
+                  headerIds: true,
+                })}
+              </Highlight>
             </div>
           );
         })}
