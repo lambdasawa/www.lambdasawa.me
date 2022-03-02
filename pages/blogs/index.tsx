@@ -25,16 +25,20 @@ export async function getStaticProps() {
 export default function Home(props: Props): JSX.Element {
   const router = useRouter();
 
-  console.log(`https://lambdasawa-blog.microcms.io/apis${router.asPath.replace("blogs", "blog-contents")}`);
-
   return (
     <Main title={buildTitle("ブログ")} about={props.about}>
       <Timeline
         items={props.blogContents.contents.map((c) => {
+          const field = c.content?.[0];
+          const isExternalLink = field.fieldId === "external";
+
+          const link = isExternalLink ? field.url : `/blogs/${c.id}`;
+
           return {
             date: formatDate(new Date(c.publishedAt)),
             text: c.title,
-            link: `/blogs/${c.id}`,
+            link,
+            isExternalLink,
           };
         })}
       />

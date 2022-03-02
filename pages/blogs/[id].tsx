@@ -6,6 +6,7 @@ import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import Highlight from "react-highlight";
 import { init } from "@/utils/markdown";
+import { useEffect } from "react";
 
 init();
 
@@ -42,11 +43,17 @@ export async function getStaticProps(context: { params: { id: string }; previewD
 export default function Home(props: Props): JSX.Element {
   const router = useRouter();
 
+  const content = props?.blogContent?.content?.[0];
+
+  useEffect(() => {
+    if (content.fieldId === "external") {
+      window.location.href = content.url;
+    }
+  }, [content]);
+
   if (router.isFallback) {
     return <div>Loading...</div>;
   }
-
-  const content = props?.blogContent?.content?.[0];
 
   return (
     <Main title={buildTitle(props.blogContent.title)} about={props.about}>

@@ -1,13 +1,6 @@
 import { Main } from "@/components/common/Main";
 import { Timeline } from "@/components/common/Timeline";
-import {
-  About,
-  BlogContents,
-  findAbout,
-  findBlogContents,
-  findProducts,
-  Products,
-} from "@/utils/api";
+import { About, BlogContents, findAbout, findBlogContents, findProducts, Products } from "@/utils/api";
 import { formatDate } from "@/utils/formatter";
 import { buildTitle } from "@/utils/title";
 import Head from "next/head";
@@ -24,6 +17,7 @@ type Timeline = {
   title: string;
   link?: string;
   detail: string;
+  isExternalLink: boolean;
 };
 
 function buildTimeline(props: Props): Timeline[] {
@@ -41,6 +35,7 @@ function buildTimeline(props: Props): Timeline[] {
             ? `${h.title}に合格しました。`
             : h.title,
         detail: h.detail,
+        isExternalLink: false,
       };
     }),
     ...props.products.contents.map<Timeline>((p) => {
@@ -49,14 +44,21 @@ function buildTimeline(props: Props): Timeline[] {
         title: `プロジェクトを公開しました: ${p.title}`,
         link: p.link,
         detail: p.detail,
+        isExternalLink: false,
       };
     }),
     ...props.blogContents.contents.map<Timeline>((c) => {
+      const field = c.content?.[0];
+      const isExternalLink = field.fieldId === "external";
+
+      const link = isExternalLink ? field.url : `/blogs/${c.id}`;
+
       return {
         startDate: new Date(c.publishedAt),
         title: `ブログを書きました: ${c.title}`,
-        link: `/blogs/${c.id}`,
+        link,
         detail: "",
+        isExternalLink,
       };
     }),
   ].sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
@@ -73,11 +75,7 @@ function buildTimelineDate(timeline: Timeline): string {
 }
 
 export async function getStaticProps() {
-  const [about, products, blogContents] = await Promise.all([
-    findAbout(),
-    findProducts(),
-    findBlogContents(),
-  ]);
+  const [about, products, blogContents] = await Promise.all([findAbout(), findProducts(), findBlogContents()]);
 
   return {
     props: {
@@ -102,6 +100,7 @@ export default function Home(props: Props): JSX.Element {
             date: buildTimelineDate(t),
             text: t.title,
             link: t.link,
+            isExternalLink: t.isExternalLink,
           };
         })}
       />
