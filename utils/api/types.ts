@@ -56,7 +56,11 @@ export interface BlogContent {
   publishedAt: string;
   revisedAt: string;
   title: string;
-  mdContent: string;
+  content: (
+    | { fieldId: "markdown"; body: string }
+    | { fieldId: "html"; body: string }
+    | { fieldId: "external"; url: string }
+  )[];
 }
 
 export type Cheatsheets = Contents<Cheatsheet>;

@@ -46,7 +46,7 @@ export default function Home(props: Props): JSX.Element {
     return <div>Loading...</div>;
   }
 
-  console.log(`https://lambdasawa-blog.microcms.io/apis${router.asPath.replace("blogs", "blog-contents")}`);
+  const content = props?.blogContent?.content?.[0];
 
   return (
     <Main title={buildTitle(props.blogContent.title)} about={props.about}>
@@ -59,15 +59,17 @@ export default function Home(props: Props): JSX.Element {
 
       <div className="blog">
         <h1>{props.blogContent.title}</h1>
-        {
+        {content.fieldId === "markdown" ? (
           <Highlight innerHTML={true}>
-            {marked(props?.blogContent?.mdContent || "", {
+            {marked(content.body, {
               gfm: true,
               breaks: true,
               headerIds: true,
             })}
           </Highlight>
-        }
+        ) : (
+          <></>
+        )}
       </div>
     </Main>
   );
