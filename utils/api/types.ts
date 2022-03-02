@@ -62,15 +62,3 @@ export interface BlogContent {
     | { fieldId: "external"; url: string }
   )[];
 }
-
-export type Cheatsheets = Contents<Cheatsheet>;
-
-export interface Cheatsheet {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  revisedAt: string;
-  title: string;
-  mdContent: string;
-}
