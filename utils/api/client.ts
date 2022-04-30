@@ -1,5 +1,5 @@
 import { createClient } from "microcms-js-sdk";
-import { About, BlogContent, BlogContents, Products } from "./types";
+import { About, Timeline, TimelineItem } from "./types";
 
 export const origin = process.env.ORIGIN || "http://localhost:3000";
 
@@ -8,40 +8,29 @@ export const client = createClient({
   apiKey: process.env.MICROCMS_API_KEY,
 });
 
-export function findBlogContent(id: string, draftKey?: string): Promise<BlogContent> {
-  return client.get<BlogContent>({
-    endpoint: "blog-contents",
-    contentId: id,
+export async function fetchAbout(): Promise<About> {
+  return client.get<About>({
+    endpoint: "about",
+    queries: {},
+  });
+}
+
+export function fetchTimeline(): Promise<Timeline> {
+  return client.getList<TimelineItem>({
+    endpoint: "timeline",
     queries: {
-      draftKey,
+      orders: "-publishedAt",
+      limit: 100,
     },
   });
 }
 
-export function findBlogContents(): Promise<BlogContents> {
-  return client.get<BlogContents>({
-    endpoint: "blog-contents",
-    queries: { orders: "-publishedAt", limit: 50 },
-  });
-}
-
-export async function findAbout(): Promise<About> {
-  const resp = await client.get<About>({
-    endpoint: "about",
-    queries: {},
-  });
-
-  return {
-    ...resp,
-    histories: resp.histories
-      .filter((h) => h.public)
-      .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()),
-  };
-}
-
-export function findProducts(): Promise<Products> {
-  return client.get<Products>({
-    endpoint: "products",
-    queries: {},
+export function fetchTimelineItem(id: string, draftKey?: string): Promise<TimelineItem> {
+  return client.get<TimelineItem>({
+    endpoint: "timeline",
+    contentId: id,
+    queries: {
+      draftKey,
+    },
   });
 }

@@ -1,24 +1,31 @@
 import { About } from "@/utils/api";
-import { Link } from "./Link";
+import Head from "next/head";
+import Link from "next/link";
 
 type Props = {
   about: About;
 };
 
-export function Header(props: Props): JSX.Element {
+export default function Header({ about }: Props) {
   return (
     <div>
-      <div className="py-4">
-        <Link href={"/"} text={"λ沢.me"} />
-      </div>
-      <div className="flex flex-wrap py-4">
-        {props.about.links.map((link) => (
-          <div className="py-1 pr-6" key={link.link}>
-            <Link href={link.link} text={link.name} />
-          </div>
-        ))}
-        <div className="p-1 pr-4">
-          <Link href={`mailto:${props.about.mailAddress}`} text={"Email"} />
+      <Head>
+        <title>λ沢.me</title>
+      </Head>
+      <div className="navbar bg-base-100">
+        <div className="flex-1">
+          <Link href="/">
+            <a className="btn btn-ghost normal-case text-xl">λ沢.me</a>
+          </Link>
+        </div>
+        <div className="flex-none">
+          <ul className="menu menu-horizontal p-0">
+            {about.links.map(({ link, name }) => (
+              <li key={link}>
+                <Link href={link}>{name}</Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

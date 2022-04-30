@@ -1,7 +1,7 @@
-import { BlogContent } from "@/utils/api";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { TwitterClient } from "twitter-api-client";
 import * as crypto from "crypto";
+import { TimelineItem } from "@/utils/api";
 
 type MicroCMSWebhookContent<A> = {
   status: ("DRAFT" | "PUBLISH")[];
@@ -50,14 +50,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   console.log(JSON.stringify({ body: req.body }, null, 2));
 
-  const body = req.body as MicroCMSWebhookEvent<BlogContent>;
+  const body = req.body as MicroCMSWebhookEvent<TimelineItem>;
   const onNewContent = !body?.contents?.old?.publishValue && body?.contents?.new?.publishValue;
 
   console.log(JSON.stringify({ onNewContent }));
 
   if (onNewContent) {
     await twitterClient.tweets.statusesUpdate({
-      status: `https://www.lambdasawa.me/blogs/${body.contents.new.publishValue.id} ${body.contents.new.publishValue.title}`,
+      status: `https://www.lambdasawa.me/posts/${body.contents.new.publishValue.id} ${body.contents.new.publishValue.title}`,
     });
   }
 

@@ -1,64 +1,49 @@
-export interface Contents<A> {
+export type DateRepresentation = string;
+
+export type ContentList<A> = {
   contents: A[];
   totalCount: number;
   offset: number;
   limit: number;
-}
+};
 
-export interface About {
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  revisedAt: string;
+export type ContentBase = {
+  id: string;
+  createdAt: DateRepresentation;
+  updatedAt: DateRepresentation;
+  publishedAt: DateRepresentation;
+  revisedAt: DateRepresentation;
+};
+
+export type About = {
+  createdAt: DateRepresentation;
+  updatedAt: DateRepresentation;
+  publishedAt: DateRepresentation;
+  revisedAt: DateRepresentation;
   handleName: string;
   realName: string;
   mailAddress: string;
-  links: Link[];
-  histories: History[];
-}
+  links: AboutLink[];
+};
 
-export interface Link {
-  fieldId: string;
+export type AboutLink = {
   name: string;
   link: string;
-}
+};
 
-export interface History {
-  fieldId: string;
-  title: string;
-  type: string[];
-  public: boolean;
-  startDate: string;
-  detail?: string;
-  endDate?: string;
-}
+export type Timeline = ContentList<TimelineItem>;
 
-export type Products = Contents<Product>;
-
-export interface Product {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  revisedAt: string;
-  title: string;
-  releaseDate: string;
-  link: string;
-  detail: string;
-}
-
-export type BlogContents = Contents<BlogContent>;
-
-export interface BlogContent {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string;
-  revisedAt: string;
+export type TimelineItem = ContentBase & {
   title: string;
   content: (
-    | { fieldId: "markdown"; body: string }
-    | { fieldId: "html"; body: string }
-    | { fieldId: "external"; url: string }
+    | { fieldId: "blogMarkdown"; body: string }
+    | { fieldId: "blogHTML"; body: string }
+    | { fieldId: "blogExternal"; link: string }
+    | { fieldId: "talk"; archiveLink: string; slideLink: string }
+    | { fieldId: "certification"; link: string }
+    | { fieldId: "release"; repositoryLink: string }
+    | { fieldId: "workingAt"; link: string; startDate: string; endDate: string }
+    | { fieldId: "graduatedFrom"; link: string }
+    | { fieldId: "other"; detail: string }
   )[];
-}
+};
