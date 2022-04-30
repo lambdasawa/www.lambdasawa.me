@@ -27,7 +27,9 @@ function buildTimeline(props: Props): Timeline[] {
         startDate: new Date(h.startDate),
         endDate: h.endDate ? new Date(h.endDate) : undefined,
         title:
-          h.type[0] === "career"
+          h.type[0] === "talk"
+            ? `「${h.title}」というタイトルで発表しました。`
+            : h.type[0] === "career"
             ? `${h.title}で働き始めました。`
             : h.type[0] === "education"
             ? `${h.title}に入学しました。`
