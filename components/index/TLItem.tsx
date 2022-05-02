@@ -38,7 +38,7 @@ export default function TLItem({ timelineItem }: Props) {
         <div>
           <PublishedAt publishedAt={publishedAt} />
           <span className="link link-hover">
-            <Link href={`/posts/${id}`}>{title}</Link>
+            <Link href={item.link}>{title}</Link>
           </span>
         </div>
       );
